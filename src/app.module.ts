@@ -2,6 +2,7 @@ import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
+import { ProductEntity } from './product/entities/product.entity';
 import { ProductModule } from './product/product.module';
 
 @Module({
@@ -13,9 +14,9 @@ import { ProductModule } from './product/product.module';
       username: 'postgres',
       password: 'admin',
       database: 'linkedin',
-      entities: [],
+      entities: [ProductEntity],
       synchronize: true,
-      logging:true,
+      logging: true,
     }),
     ProductModule,
   ],
