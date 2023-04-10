@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { CreateProductDto } from './dto/create-product.dto';
@@ -28,7 +28,12 @@ export class ProductService {
     return `This action updates a #${id} product`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} product`;
+  async remove(id: string) {
+    const produto = await this.productRepository.findOne({ where: { id: id } });
+
+    if (!produto) {
+      throw new BadRequestException('cliente não encotrado');
+    }
+    return await this.productRepository.delete(id);
   }
 }
