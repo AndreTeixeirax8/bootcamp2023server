@@ -24,8 +24,49 @@ export class ProductService {
     return `This action returns a #${id} product`;
   }
 
-  update(id: number, updateProductDto: UpdateProductDto) {
-    return `This action updates a #${id} product`;
+  async update(id: string, updateProductDto: UpdateProductDto) {
+    const {
+      title,
+      description,
+      imgUrl1,
+      imgUrl2,
+      price,
+      quantity,
+      size,
+      color,
+      shippings,
+      sex,
+      brands,
+      category,
+    } = updateProductDto;
+
+    const findProduct = await this.productRepository.findOne({
+      where: { id: id },
+    });
+    if (!findProduct) {
+      throw new BadRequestException('produto  não encotrado');
+    }
+    let updateProduct: any = {};
+
+    title && (updateProduct.title = title);
+    description && (updateProduct.description = description);
+    imgUrl1 && (updateProduct.imgUrl1 = imgUrl1);
+    imgUrl2 && (updateProduct.imgUrl2 = imgUrl2);
+    price && (updateProduct.price = price);
+    quantity && (updateProduct.quantity = quantity);
+    size && (updateProduct.size = size);
+    color && (updateProduct.color = color);
+    shippings && (updateProduct.shippings = shippings);
+    sex && (updateProduct.sex = sex);
+    brands && (updateProduct.brands = brands);
+    category && (updateProduct.category = category);
+
+    await this.productRepository.update({ id: id }, updateProduct);
+    const findProductAgain = await this.productRepository.findOne({
+      where: { id: id },
+    });
+
+    return findProductAgain;
   }
 
   async remove(id: string) {
