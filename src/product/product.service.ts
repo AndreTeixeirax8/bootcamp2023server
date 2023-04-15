@@ -20,8 +20,8 @@ export class ProductService {
     return await this.productRepository.find();
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} product`;
+  findOne(id: string) {
+    return this.productRepository.findOne({ where: { id: id } });
   }
 
   async update(id: string, updateProductDto: UpdateProductDto) {
